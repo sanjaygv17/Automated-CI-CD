@@ -8,6 +8,8 @@ on:
     branches: [main]
 
 jobs:
+
+  # JOB 1: Automated Testing
   test:
     name: Test Python Application
     runs-on: ubuntu-latest
@@ -24,22 +26,27 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
+          pip install pytest
 
       - name: Run Automated Tests
         run: |
           python -m pytest -v
 
+
+  # JOB 2: Docker Build and Deployment
   docker-publish:
-    name: Build and Push Docker Image
+    name: Build and Deploy Application
     needs: test
+
     if: github.event_name == 'push'
+
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
+      - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
@@ -48,17 +55,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Image
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
         with:
           context: .
+          platforms: linux/amd64
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/python-cicd-app:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/python-cicd-app:${{ github.sha }}
 
-      - name: Deploy to Render
-        if: github.event_name == 'push'
+      - name: Trigger Render Deployment
         env:
           DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run: curl --fail "$DEPLOY_URL"
+        run: |
+          curl --fail --show-error --silent "$DEPLOY_URL"
