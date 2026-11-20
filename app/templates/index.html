@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps CI/CD Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #101827;
+            color: #f1f5f9;
+            padding: 40px 8%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 70px;
+        }
+
+        header h2 {
+            color: #38bdf8;
+        }
+
+        .badge {
+            background: #164e3b;
+            color: #4ade80;
+            padding: 9px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .hero {
+            margin-bottom: 55px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            line-height: 1.7;
+            max-width: 650px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 45px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        .card h3 {
+            color: #38bdf8;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 60px;
+            border-top: 1px solid #334155;
+            padding-top: 25px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        @media(max-width: 600px) {
+            body { padding: 25px 5%; }
+            .hero h1 { font-size: 36px; }
+            header { margin-bottom: 50px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>⚡ DevOps Project</h2>
+    <span class="badge" id="status">Checking application...</span>
+</header>
+
+<section class="hero">
+    <h1>Build. Test. <span>Deploy.</span></h1>
+    <p>
+        Welcome to my Python Flask application.
+        This project demonstrates an automated CI/CD pipeline
+        using GitHub Actions, Docker, Docker Hub and Render.
+        Every code update can trigger automated testing,
+        container building and deployment.
+    </p>
+</section>
+
+<h2>Technology Stack</h2>
+
+<div class="grid">
+    <div class="card">
+        <h3>🐍 Python & Flask</h3>
+        <p>Backend application developed using Python and Flask.</p>
+    </div>
+
+    <div class="card">
+        <h3>🧪 Pytest</h3>
+        <p>Automated testing to verify application functionality.</p>
+    </div>
+
+    <div class="card">
+        <h3>🐳 Docker</h3>
+        <p>Containerizes the application for consistent deployment.</p>
+    </div>
+
+    <div class="card">
+        <h3>⚙️ GitHub Actions</h3>
+        <p>Automates testing, building and publishing the Docker image.</p>
+    </div>
+
+    <div class="card">
+        <h3>📦 Docker Hub</h3>
+        <p>Stores and distributes the application Docker image.</p>
+    </div>
+
+    <div class="card">
+        <h3>🚀 Render</h3>
+        <p>Hosts the containerized application online.</p>
+    </div>
+</div>
+
+<h2>CI/CD Workflow</h2>
+
+<div class="grid">
+    <div class="card"><h3>01. Code</h3><p>Develop and push code to GitHub.</p></div>
+    <div class="card"><h3>02. Test</h3><p>GitHub Actions runs automated tests.</p></div>
+    <div class="card"><h3>03. Build</h3><p>Docker builds the application image.</p></div>
+    <div class="card"><h3>04. Publish</h3><p>Image is pushed to Docker Hub.</p></div>
+    <div class="card"><h3>05. Deploy</h3><p>Render hosts the application.</p></div>
+</div>
+
+<h2>Application Health</h2>
+
+<div class="card">
+    <p>Check the backend health endpoint:</p>
+    <a href="/health" target="_blank">Open Health API →</a>
+</div>
+
+<footer>
+    <p>Python Flask CI/CD Project | Built as a DevOps Learning Project</p>
+</footer>
+
+<script>
+    fetch('/health')
+        .then(response => {
+            if (!response.ok) throw new Error('Application unavailable');
+            return response.json();
+        })
+        .then(() => {
+            document.getElementById('status').textContent = '● Application Online';
+        })
+        .catch(() => {
+            document.getElementById('status').textContent = '● API Unavailable';
+        });
+</script>
+
+</body>
+</html>

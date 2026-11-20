@@ -13,20 +13,29 @@ def client():
 
 def test_home_endpoint(client):
     response = client.get('/')
-
     assert response.status_code == 200
-
-    data = response.get_json()
-
-    assert data['status'] == 'success'
-    assert data['message'] == 'Welcome to Python CI/CD Project'
+    assert b'DevOps CI/CD Dashboard' in response.data
 
 
 def test_health_endpoint(client):
     response = client.get('/health')
-
     assert response.status_code == 200
+    assert response.json['status'] == 'healthy'
 
-    data = response.get_json()
 
-    assert data['status'] == 'healthy'
+def test_info_endpoint(client):
+    response = client.get('/api/info')
+    assert response.status_code == 200
+    assert response.json['backend'] == 'Flask'
+
+
+def test_status_endpoint(client):
+    response = client.get('/api/status')
+    assert response.status_code == 200
+    assert response.json['application_status'] == 'running'
+
+
+def test_version_endpoint(client):
+    response = client.get('/api/version')
+    assert response.status_code == 200
+    assert response.json['version'] == '2.0.0'
