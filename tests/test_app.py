@@ -19,7 +19,7 @@ def test_home_endpoint(client):
     data = response.get_json()
 
     assert data['status'] == 'success'
-    assert data['message'] == 'Welcome to Python CI/CD Project'
+    assert data['message'] == 'Welcome to Python CI Project'
 
 
 def test_health_endpoint(client):

@@ -14,3 +14,4 @@ def health():
     return jsonify({
         "status": "healthy"
     })
+
